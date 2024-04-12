@@ -171,6 +171,7 @@ function makeScatterRenderer(PlotlyComponent) {
         yaxis: {title: this.props.rows.join('-'), automargin: true},
         width: window.innerWidth / 1.5,
         height: window.innerHeight / 1.4 - 50,
+        colorway: this.props.colowary,
         /* eslint-enable no-magic-numbers */
       };
 
