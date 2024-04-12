@@ -237,6 +237,7 @@ class PivotTableUI extends React.PureComponent {
       openDropdown: false,
       attrValues: {},
       materializedInput: [],
+      expanded: false,
     };
   }
 
@@ -339,7 +340,9 @@ class PivotTableUI extends React.PureComponent {
     return this.state.openDropdown === dropdown;
   }
 
-  makeDnDCell(items, onChange, classes) {
+  makeDnDCell(items, onChange, classes, collapseable) {
+    const collapseableAndExpanded = collapseable && this.state.expanded;
+
     return (
       <Sortable
         options={{
@@ -349,10 +352,13 @@ class PivotTableUI extends React.PureComponent {
           preventOnFilter: false,
         }}
         tag="td"
-        className={classes}
+        className={classes + (collapseable ? ' pvtCollapseable' : '')}
         onChange={onChange}
+        style={{
+          maxHeight: collapseableAndExpanded ? '1000px' : '47px',
+        }}
       >
-        {items.map(x => (
+        {items.sort().map(x => (
           <DraggableAttribute
             name={x}
             key={x}
@@ -367,6 +373,22 @@ class PivotTableUI extends React.PureComponent {
             zIndex={this.state.zIndices[x] || this.state.maxZIndex}
           />
         ))}
+        {collapseable && !this.state.expanded && (
+          <div
+            className="pvtExpand"
+            onClick={() => this.setState({expanded: true})}
+          >
+            +
+          </div>
+        )}
+        {collapseable && this.state.expanded && (
+          <div
+            className="pvtExpand"
+            onClick={() => this.setState({expanded: false})}
+          >
+            −
+          </div>
+        )}
       </Sortable>
     );
   }
@@ -494,7 +516,8 @@ class PivotTableUI extends React.PureComponent {
       order => this.setState({unusedOrder: order}),
       `pvtAxisContainer pvtUnused ${
         horizUnused ? 'pvtHorizList' : 'pvtVertList'
-      }`
+      }`,
+      true
     );
 
     const colAttrs = this.props.cols.filter(
