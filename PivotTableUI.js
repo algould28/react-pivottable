@@ -338,7 +338,8 @@ var PivotTableUI = function (_React$PureComponent2) {
       maxZIndex: 1000,
       openDropdown: false,
       attrValues: {},
-      materializedInput: []
+      materializedInput: [],
+      expanded: false
     };
     return _this5;
   }
@@ -470,8 +471,10 @@ var PivotTableUI = function (_React$PureComponent2) {
     }
   }, {
     key: 'makeDnDCell',
-    value: function makeDnDCell(items, onChange, classes) {
+    value: function makeDnDCell(items, onChange, classes, collapseable) {
       var _this7 = this;
+
+      var collapseableAndExpanded = collapseable && this.state.expanded;
 
       return _react2.default.createElement(
         _reactSortablejs2.default,
@@ -483,10 +486,13 @@ var PivotTableUI = function (_React$PureComponent2) {
             preventOnFilter: false
           },
           tag: 'td',
-          className: classes,
-          onChange: onChange
+          className: classes + (collapseable ? ' pvtCollapseable' : ''),
+          onChange: onChange,
+          style: {
+            maxHeight: collapseableAndExpanded ? '1000px' : '47px'
+          }
         },
-        items.map(function (x) {
+        items.sort().map(function (x) {
           return _react2.default.createElement(DraggableAttribute, {
             name: x,
             key: x,
@@ -500,7 +506,27 @@ var PivotTableUI = function (_React$PureComponent2) {
             removeValuesFromFilter: _this7.removeValuesFromFilter.bind(_this7),
             zIndex: _this7.state.zIndices[x] || _this7.state.maxZIndex
           });
-        })
+        }),
+        collapseable && !this.state.expanded && _react2.default.createElement(
+          'div',
+          {
+            className: 'pvtExpand',
+            onClick: function onClick() {
+              return _this7.setState({ expanded: true });
+            }
+          },
+          '+'
+        ),
+        collapseable && this.state.expanded && _react2.default.createElement(
+          'div',
+          {
+            className: 'pvtExpand',
+            onClick: function onClick() {
+              return _this7.setState({ expanded: false });
+            }
+          },
+          '\u2212'
+        )
       );
     }
   }, {
@@ -618,7 +644,7 @@ var PivotTableUI = function (_React$PureComponent2) {
 
       var unusedAttrsCell = this.makeDnDCell(unusedAttrs, function (order) {
         return _this8.setState({ unusedOrder: order });
-      }, 'pvtAxisContainer pvtUnused ' + (horizUnused ? 'pvtHorizList' : 'pvtVertList'));
+      }, 'pvtAxisContainer pvtUnused ' + (horizUnused ? 'pvtHorizList' : 'pvtVertList'), true);
 
       var colAttrs = this.props.cols.filter(function (e) {
         return !_this8.props.hiddenAttributes.includes(e) && !_this8.props.hiddenFromDragDrop.includes(e);
