@@ -78,6 +78,7 @@ function makeRenderer(
         /* eslint-disable no-magic-numbers */
         width: window.innerWidth / 1.5,
         height: window.innerHeight / 1.4 - 50,
+        colorway: this.props.colorway,
         /* eslint-enable no-magic-numbers */
       };
 

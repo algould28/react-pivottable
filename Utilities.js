@@ -1007,7 +1007,8 @@ PivotData.defaultProps = {
   valueFilter: {},
   rowOrder: 'key_a_to_z',
   colOrder: 'key_a_to_z',
-  derivedAttributes: {}
+  derivedAttributes: {},
+  colorway: []
 };
 
 PivotData.propTypes = {
@@ -1020,7 +1021,8 @@ PivotData.propTypes = {
   sorters: _propTypes2.default.oneOfType([_propTypes2.default.func, _propTypes2.default.objectOf(_propTypes2.default.func)]),
   derivedAttributes: _propTypes2.default.objectOf(_propTypes2.default.func),
   rowOrder: _propTypes2.default.oneOf(['key_a_to_z', 'value_a_to_z', 'value_z_to_a']),
-  colOrder: _propTypes2.default.oneOf(['key_a_to_z', 'value_a_to_z', 'value_z_to_a'])
+  colOrder: _propTypes2.default.oneOf(['key_a_to_z', 'value_a_to_z', 'value_z_to_a']),
+  colorway: _propTypes2.default.arrayOf(_propTypes2.default.string)
 };
 
 exports.aggregatorTemplates = aggregatorTemplates;
