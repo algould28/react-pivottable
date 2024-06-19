@@ -268,7 +268,7 @@ table.pvtTable tbody tr td {
   width: 300px;
   border: 1px solid #506784;
   background-color: #fff;
-  position: absolute;
+  position: fixed;
   text-align: center;
   user-select: none;
   min-height: 100px;
